@@ -6,6 +6,7 @@ import com.example.security.domain.member.entity.Member;
 import com.example.security.domain.member.enums.MemberRole;
 import com.example.security.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,12 +16,12 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    //private final BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
     
     public Member signUp(final SignUpDto dto) {
         final Member member = Member.builder()
                 .memberId(dto.getMemberId())
-                .pwd(dto.getPwd())
+                .pwd(passwordEncoder.encode(dto.getPwd()))
                 .role(MemberRole.ROLE_MEMBER)
                 .build();
 
