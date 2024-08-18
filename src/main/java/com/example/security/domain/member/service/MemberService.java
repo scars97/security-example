@@ -23,6 +23,7 @@ public class MemberService {
                 .memberId(dto.getMemberId())
                 .pwd(passwordEncoder.encode(dto.getPwd()))
                 .role(MemberRole.ROLE_MEMBER)
+                .isEnable(true)
                 .build();
 
         return memberRepository.save(member);

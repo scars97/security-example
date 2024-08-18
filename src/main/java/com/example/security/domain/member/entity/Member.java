@@ -1,6 +1,5 @@
 package com.example.security.domain.member.entity;
 
-import com.example.security.domain.member.dto.SignUpDto;
 import com.example.security.domain.member.enums.MemberRole;
 import jakarta.persistence.*;
 import lombok.*;
