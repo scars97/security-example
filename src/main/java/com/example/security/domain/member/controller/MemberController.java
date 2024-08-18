@@ -1,6 +1,6 @@
 package com.example.security.domain.member.controller;
 
-import com.example.security.domain.member.MemberService;
+import com.example.security.domain.member.service.MemberService;
 import com.example.security.domain.member.dto.MemberListResponseDto;
 import com.example.security.domain.member.dto.SignUpDto;
 import lombok.RequiredArgsConstructor;

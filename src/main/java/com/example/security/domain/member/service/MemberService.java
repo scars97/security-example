@@ -1,4 +1,4 @@
-package com.example.security.domain.member;
+package com.example.security.domain.member.service;
 
 import com.example.security.domain.member.dto.MemberListResponseDto;
 import com.example.security.domain.member.dto.SignUpDto;
@@ -6,7 +6,7 @@ import com.example.security.domain.member.entity.Member;
 import com.example.security.domain.member.enums.MemberRole;
 import com.example.security.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     
     public Member signUp(final SignUpDto dto) {
         final Member member = Member.builder()

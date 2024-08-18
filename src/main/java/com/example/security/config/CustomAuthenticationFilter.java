@@ -1,6 +1,5 @@
-package com.example.security.security;
+package com.example.security.config;
 
-import com.example.security.domain.member.MemberService;
 import com.example.security.domain.member.entity.Member;
 import com.example.security.exception.InputNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +21,7 @@ import java.io.IOException;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
-        super.setAuthenticationManager(authenticationManager);
+        super(authenticationManager);
     }
 
     /**
