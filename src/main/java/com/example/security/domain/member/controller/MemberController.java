@@ -25,4 +25,11 @@ public class MemberController {
     public ResponseEntity<MemberListResponseDto> findAll() {
         return ResponseEntity.ok(memberService.findAll());
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody SignUpDto dto) {
+
+
+        return ResponseEntity.ok("성공");
+    }
 }

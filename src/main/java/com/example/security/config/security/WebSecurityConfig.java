@@ -1,4 +1,4 @@
-package com.example.security.config;
+package com.example.security.config.security;
 
 import com.example.security.handler.CustomLoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -35,9 +36,12 @@ public class WebSecurityConfig {
         // CSRF 토큰이 없거나 올바르지 않으면 403 Forbidden 에러가 발생
         http.csrf(AbstractHttpConfigurer::disable) // csrf 비활성화
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/members/**").permitAll()
+                        .requestMatchers("/members/signUp", "/members/login").permitAll()
                         .anyRequest().authenticated()
                 );
+                /*.formLogin(login -> login.loginPage("/login")
+                        .loginProcessingUrl("/members/login")
+                        .defaultSuccessUrl("/members/test"));*/
 
         return http.build();
     }
@@ -58,7 +62,7 @@ public class WebSecurityConfig {
     @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-        customAuthenticationFilter.setFilterProcessesUrl("/member/login");
+        customAuthenticationFilter.setFilterProcessesUrl("/members/login");
         customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
         customAuthenticationFilter.afterPropertiesSet();
         return customAuthenticationFilter;

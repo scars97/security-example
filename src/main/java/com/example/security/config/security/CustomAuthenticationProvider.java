@@ -1,4 +1,4 @@
-package com.example.security.config;
+package com.example.security.config.security;
 
 import com.example.security.domain.member.entity.MemberDetails;
 import lombok.RequiredArgsConstructor;
