@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>로그인</title>
+    <title>회원가입</title>
 </head>
 <body>
 <div class="container">
 
-    <h1>로그인</h1>
-    <form role="form" th:action="@{/login-proc}" th:object="${loginForm}" method="post">
+    <h1>회원가입</h1>
+    <form role="form" th:action="@{/signUp-proc}" th:object="${signUpForm}" method="post">
         <div class="form-group">
             <label th:for="memberId">아이디</label>
             <input type="text" name="memberId" class="form-control" placeholder="아이디 입력해주세요">
@@ -19,7 +19,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    <br/>
+
 </div>
 </body>
 </html>
