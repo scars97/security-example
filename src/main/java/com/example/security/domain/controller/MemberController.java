@@ -1,9 +1,8 @@
-package com.example.security.domain.member.controller;
+package com.example.security.domain.controller;
 
-import com.example.security.domain.member.entity.MemberDetails;
-import com.example.security.domain.member.service.MemberService;
-import com.example.security.domain.member.dto.MemberListResponseDto;
-import com.example.security.domain.member.dto.SignUpDto;
+import com.example.security.domain.dto.MemberListResponseDto;
+import com.example.security.domain.dto.MemberDto;
+import com.example.security.domain.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,7 +21,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signUp")
-    public ResponseEntity<Long> signUp(@RequestBody SignUpDto dto) {
+    public ResponseEntity<Long> signUp(@RequestBody MemberDto dto) {
         return memberService.isMemberIdDuplicated(dto.getMemberId())
                 ? ResponseEntity.badRequest().build()
                 : ResponseEntity.ok(memberService.signUp(dto).getId());
@@ -38,6 +37,8 @@ public class MemberController {
         log.info(SecurityContextHolder.getContext().getAuthentication());
         log.info(request.getSession().getAttribute("SPRING_SECURITY_CONTEXT"));
         log.info(userDetails.getUsername());
+
+        log.info(request.getSession().getId());
         return ResponseEntity.ok("지속 인증");
     }
 }

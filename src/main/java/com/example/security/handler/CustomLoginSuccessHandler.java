@@ -1,7 +1,7 @@
 package com.example.security.handler;
 
-import com.example.security.domain.member.entity.Member;
-import com.example.security.domain.member.entity.MemberDetails;
+import com.example.security.domain.entity.Member;
+import com.example.security.domain.entity.MemberDetails;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

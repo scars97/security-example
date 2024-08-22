@@ -1,6 +1,6 @@
-package com.example.security.domain.member.entity;
+package com.example.security.domain.entity;
 
-import com.example.security.domain.member.enums.MemberRole;
+import com.example.security.domain.enums.MemberRole;
 import jakarta.persistence.*;
 import lombok.*;
 

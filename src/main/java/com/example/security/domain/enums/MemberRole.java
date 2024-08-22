@@ -1,4 +1,4 @@
-package com.example.security.domain.member.enums;
+package com.example.security.domain.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

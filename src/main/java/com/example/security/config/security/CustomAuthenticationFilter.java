@@ -1,6 +1,6 @@
 package com.example.security.config.security;
 
-import com.example.security.domain.member.entity.Member;
+import com.example.security.domain.entity.Member;
 import com.example.security.exception.InputNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;

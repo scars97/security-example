@@ -1,6 +1,6 @@
 package com.example.security.config.security;
 
-import com.example.security.domain.member.entity.MemberDetails;
+import com.example.security.domain.entity.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationProvider;

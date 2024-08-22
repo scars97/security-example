@@ -1,6 +1,6 @@
-package com.example.security.domain.member.dto;
+package com.example.security.domain.dto;
 
-import com.example.security.domain.member.entity.Member;
+import com.example.security.domain.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
