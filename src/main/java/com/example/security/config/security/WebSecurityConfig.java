@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -35,16 +34,38 @@ public class WebSecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         // POST, PUT, DELETE 같은 상태 변경을 하는 HTTP 메서드를 사용할 때,
         // CSRF 토큰이 없거나 올바르지 않으면 403 Forbidden 에러가 발생
-        http.csrf(AbstractHttpConfigurer::disable) // csrf 비활성화
+        http.csrf(AbstractHttpConfigurer::disable); // csrf 비활성화
+
+        http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/members/signUp", "/members/login").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/", "/login", "/signUp", "/login-proc", "/signUp-proc").permitAll() // 누구나 접근 가능
+                        .requestMatchers("/admin").hasRole("ADMIN") // admin 권한을 가진 경우 접근 가능
+                        .anyRequest().authenticated() // 그 외 경로는 로그인 인증 후 접근 가능
                 );
-                /*.formLogin(login -> login.loginPage("/login")
-                        .loginProcessingUrl("/members/login")
-                        .defaultSuccessUrl("/members/test"));*/
+
+        http
+                .formLogin(authorize -> authorize
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login-proc")
+                        .permitAll()
+                );
+
+        http
+                .sessionManagement(session -> session
+                        .maximumSessions(1) // 하나의 아이디에 대한 다중 로그인 허용 개수
+                        .maxSessionsPreventsLogin(true) // 다중 로그인 개수 초과 시 처리 방법 -> true: 새로운 로그인 차단 / false: 기존 세션 삭제
+                );
+
+        // 세션 고정 공격 보호
+        http
+                .sessionManagement(session -> session
+                        //.sessionFixation().changeSessionId() // 로그인 시 동일한 세션에 대한 id 변경
+                        .sessionFixation().newSession() // 로그인 시 세션 새로 생성
+                        //.sessionFixation().none() // 로그인 시 세션 정보 변경 x
+                );
 
         return http.build();
     }
@@ -65,7 +86,7 @@ public class WebSecurityConfig {
     @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-        customAuthenticationFilter.setFilterProcessesUrl("/members/login");
+        customAuthenticationFilter.setFilterProcessesUrl("/login-proc");
         customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
         customAuthenticationFilter.afterPropertiesSet();
         // Persisting Authentication 지속 인증 설정
