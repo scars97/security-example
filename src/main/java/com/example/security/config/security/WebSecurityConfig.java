@@ -41,18 +41,21 @@ public class WebSecurityConfig {
 
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login", "/signUp", "/login-proc", "/signUp-proc").permitAll() // 누구나 접근 가능
-                        .requestMatchers("/admin").hasRole("ADMIN") // admin 권한을 가진 경우 접근 가능
+                        // Form 기반 로그인 권한
+                        //.requestMatchers("/login", "/signUp", "/login-proc", "/signUp-proc").permitAll() // 누구나 접근 가능
+                        //.requestMatchers("/admin").hasRole("ADMIN") // admin 권한을 가진 경우 접근 가능
+                        // API 기반 로그인 권한
+                        .requestMatchers("/members/signUp").permitAll()
                         .anyRequest().authenticated() // 그 외 경로는 로그인 인증 후 접근 가능
                 );
 
-        http
+       /* http
                 .formLogin(authorize -> authorize
                         .loginPage("/login")
                         .loginProcessingUrl("/login-proc")
                         .permitAll()
                         .defaultSuccessUrl("/", true)
-                );
+                );*/
 
         http
                 .sessionManagement(session -> session
