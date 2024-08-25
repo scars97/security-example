@@ -41,7 +41,7 @@ public class WebSecurityConfig {
 
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/", "/login", "/signUp", "/login-proc", "/signUp-proc").permitAll() // 누구나 접근 가능
+                        .requestMatchers("/login", "/signUp", "/login-proc", "/signUp-proc").permitAll() // 누구나 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN") // admin 권한을 가진 경우 접근 가능
                         .anyRequest().authenticated() // 그 외 경로는 로그인 인증 후 접근 가능
                 );
@@ -51,6 +51,7 @@ public class WebSecurityConfig {
                         .loginPage("/login")
                         .loginProcessingUrl("/login-proc")
                         .permitAll()
+                        .defaultSuccessUrl("/", true)
                 );
 
         http

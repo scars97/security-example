@@ -3,9 +3,12 @@ package com.example.security.domain.controller;
 import com.example.security.domain.dto.MemberDto;
 import com.example.security.domain.entity.MemberDetails;
 import com.example.security.domain.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,23 +22,17 @@ public class LoginController {
     private final MemberService memberService;
 
     @GetMapping("/")
-    public String main(Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
+    public String main(Model model, HttpServletRequest request, @AuthenticationPrincipal MemberDetails memberDetails) {
         model.addAttribute("user", memberDetails.getUsername());
+        log.info(SecurityContextHolder.getContext().getAuthentication());
+        log.info(request.getSession().getAttribute("SPRING_SECURITY_CONTEXT"));
+
         return "main";
     }
 
     @GetMapping("/login")
-    public String login(Model model) {
-
-        model.addAttribute("loginForm", new MemberDto());
+    public String login() {
         return "login";
-    }
-
-    @PostMapping("/login-proc")
-    public String loginProcess(MemberDto dto) {
-        log.info(dto.getMemberId());
-
-        return "redirect:/";
     }
 
     @GetMapping("/signUp")
