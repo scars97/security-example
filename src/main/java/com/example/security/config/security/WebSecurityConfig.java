@@ -9,10 +9,12 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.DelegatingSecurityContextRepository;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
@@ -45,7 +47,7 @@ public class WebSecurityConfig {
                         //.requestMatchers("/login", "/signUp", "/login-proc", "/signUp-proc").permitAll() // 누구나 접근 가능
                         //.requestMatchers("/admin").hasRole("ADMIN") // admin 권한을 가진 경우 접근 가능
                         // API 기반 로그인 권한
-                        .requestMatchers("/members/signUp").permitAll()
+                        .requestMatchers("/members/signUp", "/login-proc").permitAll()
                         .anyRequest().authenticated() // 그 외 경로는 로그인 인증 후 접근 가능
                 );
 
@@ -59,17 +61,22 @@ public class WebSecurityConfig {
 
         http
                 .sessionManagement(session -> session
-                        .maximumSessions(1) // 하나의 아이디에 대한 다중 로그인 허용 개수
-                        .maxSessionsPreventsLogin(true) // 다중 로그인 개수 초과 시 처리 방법 -> true: 새로운 로그인 차단 / false: 기존 세션 삭제
+                        //.maximumSessions(1) // 하나의 아이디에 대한 다중 로그인 허용 개수
+                        //.maxSessionsPreventsLogin(true) // 다중 로그인 개수 초과 시 처리 방법 -> true: 새로운 로그인 차단 / false: 기존 세션 삭제
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 미생성, 세션 저장소 비활성화
                 );
 
-        // 세션 고정 공격 보호
+        // 기존 UsernamePasswordAuthenticationFilter 동작 자리에 customAuthenticationFilter 삽입
         http
+                .addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        // 세션 고정 공격 보호
+        /*http
                 .sessionManagement(session -> session
-                        //.sessionFixation().changeSessionId() // 로그인 시 동일한 세션에 대한 id 변경
                         .sessionFixation().newSession() // 로그인 시 세션 새로 생성
+                        //.sessionFixation().changeSessionId() // 로그인 시 동일한 세션에 대한 id 변경
                         //.sessionFixation().none() // 로그인 시 세션 정보 변경 x
-                );
+                );*/
 
         return http.build();
     }
@@ -94,9 +101,9 @@ public class WebSecurityConfig {
         customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
         customAuthenticationFilter.afterPropertiesSet();
         // Persisting Authentication 지속 인증 설정
-        customAuthenticationFilter.setSecurityContextRepository(new DelegatingSecurityContextRepository(
+        /*customAuthenticationFilter.setSecurityContextRepository(new DelegatingSecurityContextRepository(
                 new RequestAttributeSecurityContextRepository(),
-                new HttpSessionSecurityContextRepository()));
+                new HttpSessionSecurityContextRepository()));*/
         return customAuthenticationFilter;
     }
 
