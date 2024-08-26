@@ -1,5 +1,6 @@
 package com.example.security.config.security;
 
+import com.example.security.config.filter.JwtFilter;
 import com.example.security.handler.CustomLoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -66,6 +67,8 @@ public class WebSecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 미생성, 세션 저장소 비활성화
                 );
 
+        http
+                .addFilterBefore(new JwtFilter(), CustomAuthenticationFilter.class);
         // 기존 UsernamePasswordAuthenticationFilter 동작 자리에 customAuthenticationFilter 삽입
         http
                 .addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

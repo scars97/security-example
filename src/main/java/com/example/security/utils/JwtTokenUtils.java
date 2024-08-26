@@ -75,14 +75,14 @@ public class JwtTokenUtils {
         return claims;
     }
 
-    private static String getMemberIdFromToken(String token) {
+    public static String getMemberIdFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
         return claims.get("memberId", String.class);
     }
 
-    private static MemberRole getRoleFromToken(String token) {
+    public static String getRoleFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
-        return claims.get("role", MemberRole.class);
+        return claims.get("role", String.class);
     }
 
     private static Claims getClaimsFromToken(String token) {
