@@ -3,7 +3,7 @@
 ---
 
 ## Form 기반 로그인
-- Spring Security에서는 기본저그올 폼 기반 인증을 사용할 때, 로그인 폼의 입력 필드 이름을 'username', 'password'로 받는다.
+- Spring Security에서는 폼 기반 인증을 사용할 때 기본적으로 로그인 폼의 입력 필드 이름을 'username', 'password'로 받는다.
 - Spring Security가 제공하는 기본 인증 필터(UsernamePasswordAuthenticationFilter)가 두 필드 이름을 사용하여 인증을 처리한다.
 ```java
 public class UsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
@@ -45,6 +45,7 @@ public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest
     return ResponseEntity.ok();
 }
 ```
+- form 로그인 시 UsernamePasswordAuthenticationFilter를 사용하는데 만약 formLogin을 비활성화했다면 
 - UsernamePasswordAuthenticationFilter 를 상속하는 커스텀 필터를 구현하여 사용할 수도 있다.
 ```java
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
