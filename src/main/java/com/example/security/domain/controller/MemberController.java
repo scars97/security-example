@@ -35,10 +35,8 @@ public class MemberController {
     @GetMapping("")
     public ResponseEntity<String> loginSuccess(@AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request) {
         log.info(SecurityContextHolder.getContext().getAuthentication());
-        log.info(request.getSession().getAttribute("SPRING_SECURITY_CONTEXT"));
         log.info(userDetails.getUsername());
 
-        log.info(request.getSession().getId());
         return ResponseEntity.ok("지속 인증");
     }
 }
