@@ -52,14 +52,6 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated() // 그 외 경로는 로그인 인증 후 접근 가능
                 );
 
-       /* http
-                .formLogin(authorize -> authorize
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login-proc")
-                        .permitAll()
-                        .defaultSuccessUrl("/", true)
-                );*/
-
         http
                 .sessionManagement(session -> session
                         //.maximumSessions(1) // 하나의 아이디에 대한 다중 로그인 허용 개수
@@ -67,11 +59,21 @@ public class WebSecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 미생성, 세션 저장소 비활성화
                 );
 
+        // CustomAuthenticationFilter가 동작하기 전 JwtFilter 실행
         http
                 .addFilterBefore(new JwtFilter(), CustomAuthenticationFilter.class);
         // 기존 UsernamePasswordAuthenticationFilter 동작 자리에 customAuthenticationFilter 삽입
         http
                 .addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        // form 로그인 disable
+        /* http
+                .formLogin(authorize -> authorize
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login-proc")
+                        .permitAll()
+                        .defaultSuccessUrl("/", true)
+                );*/
 
         // 세션 고정 공격 보호
         /*http
