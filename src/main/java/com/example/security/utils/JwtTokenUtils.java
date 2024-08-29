@@ -28,9 +28,9 @@ public class JwtTokenUtils {
     public static String generateJwtToken(Member member) {
         return Jwts.builder()
                 .subject(member.getMemberId())
-                .claims(createClaims(member))
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(createExpireDateForOneYear())
+                .claims(createClaims(member)) // 클레임 정보 설정
+                .issuedAt(new Date(System.currentTimeMillis())) // 인증 시간
+                .expiration(createExpireDateForOneYear()) // 토큰 만료 시간 설정
                 .signWith(secretKey)
                 .compact();
     }
@@ -78,11 +78,6 @@ public class JwtTokenUtils {
     public static String getMemberIdFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
         return claims.get("memberId", String.class);
-    }
-
-    public static String getRoleFromToken(String token) {
-        Claims claims = getClaimsFromToken(token);
-        return claims.get("role", String.class);
     }
 
     private static Claims getClaimsFromToken(String token) {

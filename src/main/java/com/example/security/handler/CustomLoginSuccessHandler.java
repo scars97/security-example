@@ -20,7 +20,7 @@ import java.io.IOException;
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         log.info("토큰 발급 진행");
 
         final Member member = ((MemberDetails) authentication.getPrincipal()).getMember();
@@ -31,6 +31,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         response.addHeader(AuthConstants.AUTH_HEADER, AuthConstants.TOKEN_TYPE + " " + token);
 
+        // form 로그인 시 동작 설정
         /*response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
